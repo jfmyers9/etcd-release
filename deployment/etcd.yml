@@ -1,0 +1,36 @@
+name: etcd
+
+instance_groups:
+- name: etcd
+  azs:
+  - z1
+  persistent_disk_type: 10GB
+  instances: 1
+  jobs:
+  - name: bpm
+    release: bpm
+  - name: etcd
+    release: etcd
+  vm_type: default
+  stemcell: default
+  networks:
+  - name: default
+
+releases:
+- name: bpm
+  version: latest
+- name: etcd
+  version: latest
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  canary_watch_time: 5000-120000
+  max_in_flight: 1
+  serial: false
+  update_watch_time: 5000-120000
+

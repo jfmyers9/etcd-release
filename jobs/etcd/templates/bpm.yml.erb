@@ -1,0 +1,8 @@
+---
+processes:
+- name: etcd
+  executable: /var/vcap/packages/etcd/etcd
+  args:
+    - --config-file
+    - /var/vcap/jobs/etcd/config/conf.yml
+  persistent_disk: true
