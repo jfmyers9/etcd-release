@@ -4,8 +4,49 @@ name: etcd
 packages:
 - etcd
 
-properties: {}
+properties:
+  client_listen_address:
+    description: address for server to listen on for client traffic
+    default: 0.0.0.0
+  client_port:
+    description: port for server to listen on for client traffic
+    default: 2379
+  peer_listen_address:
+    description: address for server to listen on for peer traffic
+    default: 0.0.0.0
+  peer_port:
+    description: port for server to listen on for peer traffic
+    default: 2380
+  tls:
+    cert:
+      description: client server TLS cert
+    key:
+      description: client server TLS key
+    trusted_ca:
+      description: client server TLS trusted CA cert
+    peer_cert:
+      description: peer server TLS cert
+    peer_key:
+      description: peer server TLS key
+    peer_trusted_ca:
+      description: peer server TLS trusted CA cert
+
+consumes:
+- name: etcd_peers
+  type: etcd_peer
+  optional: true
+
+provides:
+- name: etcd_peers
+  type: etcd_peer
 
 templates:
+  addresses.erb: config/addresses
   bpm.yml.erb: config/bpm.yml
   conf.yml.erb: config/conf.yml
+  peer-ca.crt.erb: config/peer-ca.crt
+  peer.crt.erb: config/peer.crt
+  peer.key.erb: config/peer.key
+  server-ca.crt.erb: config/server-ca.crt
+  server.crt.erb: config/server.crt
+  server.key.erb: config/server.key

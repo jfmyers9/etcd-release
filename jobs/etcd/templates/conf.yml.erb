@@ -7,42 +7,43 @@ name: 'default'
 data-dir: /var/vcap/store/etcd
 
 # List of comma separated URLs to listen on for peer traffic.
-listen-peer-urls: http://localhost:2380
+listen-peer-urls: https://<%= p("peer_listen_address") + ":" + p("peer_port").to_s %>
 
 # List of comma separated URLs to listen on for client traffic.
-listen-client-urls: http://localhost:2379
+listen-client-urls: https://<%= p("client_listen_address") + ":" + p("client_port").to_s %>
 
-# Reject reconfiguration requests that would cause quorum loss.
-# strict-reconfig-check: false
+# List of this member's client URLs to advertise to the public.
+# # The URLs needed to be a comma-separated list.
+advertise-client-urls: https://<%= spec.address + ":" + p("client_port").to_s %>
 
 client-transport-security:
   # Path to the client server TLS cert file.
-  # cert-file:
+  cert-file: /var/vcap/jobs/etcd/config/server.crt
 
   # Path to the client server TLS key file.
-  # key-file:
+  key-file: /var/vcap/jobs/etcd/config/server.key
 
   # Enable client cert authentication.
-  client-cert-auth: false
+  client-cert-auth: true
 
   # Path to the client server TLS trusted CA cert file.
-  # trusted-ca-file:
+  trusted-ca-file: /var/vcap/jobs/etcd/config/server-ca.crt
 
   # Client TLS using generated certificates
   auto-tls: false
 
 peer-transport-security:
   # Path to the peer server TLS cert file.
-  # cert-file:
+  cert-file: /var/vcap/jobs/etcd/config/peer.crt
 
   # Path to the peer server TLS key file.
-  # key-file:
+  key-file: /var/vcap/jobs/etcd/config/peer.key
 
   # Enable peer client cert authentication.
-  peer-client-cert-auth: false
+  peer-client-cert-auth: true
 
   # Path to the peer server TLS trusted CA cert file.
-  # trusted-ca-file:
+  trusted-ca-file: /var/vcap/jobs/etcd/config/peer-ca.crt
 
   # Peer TLS using generated certificates.
   auto-tls: false
