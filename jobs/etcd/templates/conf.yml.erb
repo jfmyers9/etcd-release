@@ -1,7 +1,7 @@
 # This is the configuration file for the etcd server.
 
 # Human-readable name for this member.
-name: 'default'
+name: <%= spec.address.split(".").first %>
 
 # Path to the data directory.
 data-dir: /var/vcap/store/etcd
@@ -13,8 +13,18 @@ listen-peer-urls: https://<%= p("peer_listen_address") + ":" + p("peer_port").to
 listen-client-urls: https://<%= p("client_listen_address") + ":" + p("client_port").to_s %>
 
 # List of this member's client URLs to advertise to the public.
-# # The URLs needed to be a comma-separated list.
-advertise-client-urls: https://<%= spec.address + ":" + p("client_port").to_s %>
+# The URLs needed to be a comma-separated list.
+advertise-client-urls: https://<%= spec.address + ":" + p("client_port").to_s %>,https://etcd.default.etcd.bosh:<%= p("client_port") %>
+
+# List of this member's peer URLs to advertise to the rest of the cluster.
+# The URLs needed to be a comma-separated list.
+initial-advertise-peer-urls: https://<%= spec.address + ":" + p("peer_port").to_s %>
+
+<% peers = link("etcd_peers") %>
+
+initial-cluster: <%= peers.instances.map { |peer| "#{peer.address.split(".").first}=https://#{peer.address}:#{p("peer_port")}" }.join(",") %>
+
+initial-cluster-token: etcd-release-cluster
 
 client-transport-security:
   # Path to the client server TLS cert file.
