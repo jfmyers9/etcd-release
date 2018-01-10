@@ -44,8 +44,8 @@ provides:
   type: etcd_peer
 
 templates:
-  addresses.erb: config/addresses
   bpm.yml.erb: config/bpm.yml
+  drain.erb: bin/drain
   etcd.erb: bin/etcd
   etcdctl.erb: bin/etcdctl
   peer-ca.crt.erb: config/peer-ca.crt
