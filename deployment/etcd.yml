@@ -24,14 +24,6 @@ instance_groups:
   - z3
   consumes:
     etcd_peer: {from: etcd}
-  properties:
-    tls:
-      cert: ((etcd_client_tls.certificate))
-      key: ((etcd_client_tls.private_key))
-      trusted_ca: ((etcd_client_tls.ca))
-      peer_cert: ((etcd_peer_tls.certificate))
-      peer_key: ((etcd_peer_tls.private_key))
-      peer_trusted_ca: ((etcd_peer_tls.ca))
   persistent_disk_type: 10GB
   instances: 3
   jobs:
@@ -39,6 +31,14 @@ instance_groups:
     release: bpm
   - name: etcd
     release: etcd
+    properties:
+      tls:
+        cert: ((etcd_client_tls.certificate))
+        key: ((etcd_client_tls.private_key))
+        trusted_ca: ((etcd_client_tls.ca))
+        peer_cert: ((etcd_peer_tls.certificate))
+        peer_key: ((etcd_peer_tls.private_key))
+        peer_trusted_ca: ((etcd_peer_tls.ca))
   vm_type: default
   stemcell: default
   networks:

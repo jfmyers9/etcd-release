@@ -5,6 +5,9 @@ packages:
 - etcd
 
 properties:
+  bootstrap_cluster:
+    description: initial deploy option for bootstraping a cluster
+    default: false
   client_listen_address:
     description: address for server to listen on for client traffic
     default: 0.0.0.0
@@ -43,10 +46,13 @@ provides:
 templates:
   addresses.erb: config/addresses
   bpm.yml.erb: config/bpm.yml
-  conf.yml.erb: config/conf.yml
+  etcd.erb: bin/etcd
+  etcdctl.erb: bin/etcdctl
   peer-ca.crt.erb: config/peer-ca.crt
   peer.crt.erb: config/peer.crt
   peer.key.erb: config/peer.key
+  pre-start.erb: bin/pre-start
   server-ca.crt.erb: config/server-ca.crt
   server.crt.erb: config/server.crt
   server.key.erb: config/server.key
+  setup.erb: bin/setup

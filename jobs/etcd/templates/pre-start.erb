@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+# ensure bpm/runc setup is executed upon logging in
+cp /var/vcap/jobs/etcd/bin/setup /etc/profile.d/etcd.sh

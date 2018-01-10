@@ -1,0 +1,4 @@
+---
+- type: replace
+  path: /instance_groups/name=etcd/jobs/name=etcd/properties/bootstrap_cluster?
+  value: true

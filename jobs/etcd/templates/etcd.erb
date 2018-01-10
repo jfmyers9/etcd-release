@@ -1,0 +1,49 @@
+#!/bin/bash
+
+<% peers = link("etcd_peers") %>
+
+set -e
+
+NAME="<%= spec.address.split(".").first %>"
+CLUSTER="<%= peers.instances.map { |peer| "#{peer.address.split(".").first}=https://#{peer.address}:#{p("peer_port")}" }.join(",") %>"
+
+<% if p("bootstrap_cluster") %>
+  CLUSTER_FLAGS="--initial-cluster-state new --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
+<% else %>
+/var/vcap/packages/bosh-dns/bin/bosh-dns-wait --checkDomain upcheck.bosh-dns. --timeout 5m
+
+if ! /var/vcap/jobs/etcd/bin/etcdctl member list | grep ${NAME}; then
+  OUTPUT="$(/var/vcap/jobs/etcd/bin/etcdctl member add  ${NAME} "https://<%= spec.address + ":" + p("peer_port").to_s %>")"
+
+  if ! echo "${OUTPUT}" | grep "Added member named"; then
+    echo "Failed adding member to cluster: "
+    echo "${OUTPUT}"
+    exit 1
+  fi
+
+  CLUSTER_STATE="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER_STATE=" | cut -d'=' -f2 | cut -d'"' -f2)"
+  CLUSTER="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER=" | cut -d'=' -f2 | cut -d'"' -f2)"
+
+  CLUSTER_FLAGS="--initial-cluster-state ${CLUSTER_STATE} --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
+else
+  CLUSTER_FLAGS="--initial-cluster-state existing --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
+fi
+<% end %>
+
+/var/vcap/packages/etcd/etcd \
+  --advertise-client-urls "https://<%= spec.address + ":" + p("client_port").to_s %>" \
+  --cert-file /var/vcap/jobs/etcd/config/server.crt \
+  --client-cert-auth \
+  --data-dir /var/vcap/store/etcd \
+  --initial-advertise-peer-urls "https://<%= spec.address + ":" + p("peer_port").to_s %>" \
+  --key-file /var/vcap/jobs/etcd/config/server.key \
+  --listen-client-urls "https://<%= p("client_listen_address") + ":" + p("client_port").to_s %>" \
+  --listen-peer-urls "https://<%= p("peer_listen_address") + ":" + p("peer_port").to_s %>" \
+  --name ${NAME} \
+  --peer-cert-file /var/vcap/jobs/etcd/config/peer.crt \
+  --peer-client-cert-auth \
+  --peer-key-file /var/vcap/jobs/etcd/config/peer.key \
+  --peer-trusted-ca-file /var/vcap/jobs/etcd/config/peer-ca.crt \
+  --strict-reconfig-check \
+  --trusted-ca-file /var/vcap/jobs/etcd/config/server-ca.crt \
+  ${CLUSTER_FLAGS}

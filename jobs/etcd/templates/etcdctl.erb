@@ -1,0 +1,10 @@
+#!/bin/bash
+
+<% peers = link("etcd_peers") %>
+
+/var/vcap/packages/etcd/etcdctl \
+  --ca-file /var/vcap/jobs/etcd/config/server-ca.crt \
+  --cert-file /var/vcap/jobs/etcd/config/server.crt \
+  --key-file /var/vcap/jobs/etcd/config/server.key \
+  --endpoints "<%= peers.instances.map { |peer| "https://#{peer.address}:#{p("client_port")}" }.join(",") %>" \
+  "$@"
