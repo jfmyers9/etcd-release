@@ -21,8 +21,8 @@ if ! /var/vcap/jobs/etcd/bin/etcdctl member list | grep ${NAME}; then
     exit 1
   fi
 
-  CLUSTER_STATE="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER_STATE=" | cut -d'=' -f2 | cut -d'"' -f2)"
-  CLUSTER="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER=" | cut -d'=' -f2 | cut -d'"' -f2)"
+  CLUSTER_STATE="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER_STATE=" | cut -d'=' -f2- | cut -d'"' -f2)"
+  CLUSTER="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER=" | cut -d'=' -f2- | cut -d'"' -f2)"
 
   CLUSTER_FLAGS="--initial-cluster-state ${CLUSTER_STATE} --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
 else
