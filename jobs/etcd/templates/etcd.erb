@@ -13,7 +13,7 @@ CLUSTER="<%= peers.instances.map { |peer| "#{peer.address.split(".").first}=http
 /var/vcap/packages/bosh-dns/bin/bosh-dns-wait --checkDomain upcheck.bosh-dns. --timeout 5m
 
 if ! /var/vcap/jobs/etcd/bin/etcdctl member list | grep ${NAME}; then
-  OUTPUT="$(/var/vcap/jobs/etcd/bin/etcdctl member add  ${NAME} "https://<%= spec.address + ":" + p("peer_port").to_s %>")"
+  OUTPUT="$(/var/vcap/jobs/etcd/bin/etcdctl member add ${NAME} "https://<%= spec.address + ":" + p("peer_port").to_s %>")"
 
   if ! echo "${OUTPUT}" | grep "Added member named"; then
     echo "Failed adding member to cluster: "
