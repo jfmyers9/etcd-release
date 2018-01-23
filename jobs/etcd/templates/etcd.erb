@@ -8,11 +8,11 @@ NAME="<%= spec.address.split(".").first %>"
 CLUSTER="<%= peers.instances.map { |peer| "#{peer.address.split(".").first}=https://#{peer.address}:#{p("peer_port")}" }.join(",") %>"
 
 <% if p("bootstrap_cluster") %>
-  CLUSTER_FLAGS="--initial-cluster-state new --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
+CLUSTER_FLAGS="--initial-cluster-state new --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
 <% else %>
 /var/vcap/packages/bosh-dns/bin/bosh-dns-wait --checkDomain upcheck.bosh-dns. --timeout 5m
 
-if ! /var/vcap/jobs/etcd/bin/etcdctl member list | grep ${NAME}; then
+if [[ ! -d /var/vcap/store/etcd/member ]]; then
   OUTPUT="$(/var/vcap/jobs/etcd/bin/etcdctl member add ${NAME} "https://<%= spec.address + ":" + p("peer_port").to_s %>")"
 
   if ! echo "${OUTPUT}" | grep "Added member named"; then
