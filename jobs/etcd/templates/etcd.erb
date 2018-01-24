@@ -46,4 +46,21 @@ fi
   --peer-trusted-ca-file /var/vcap/jobs/etcd/config/peer-ca.crt \
   --strict-reconfig-check \
   --trusted-ca-file /var/vcap/jobs/etcd/config/server-ca.crt \
+  --wal-dir "<%= p("wal_dir") %>" \
+  --snapshot-count "<%= p("snapshot_count") %>" \
+  --heartbeat-interval "<%= p("heartbeat_interval") %>" \
+  --election-timeout "<%= p("election_timeout") %>" \
+  --max-snapshots "<%= p("max_snapshots") %>" \
+  --max-wals "<%= p("max_wals") %>" \
+  --cors "<%= p("cors") %>" \
+  --quota-backend-bytes "<%= p("quota_backend_bytes") %>" \
+  --max-request-bytes "<%= p("max_request_bytes") %>" \
+  --grpc-keepalive-min-time "<%= p("grpc_keepalive_min_time") %>" \
+  --grpc-keepalive-interval "<%= p("grpc_keepalive_interval") %>" \
+  --grpc-keepalive-timeout "<%= p("grpc_keepalive_timeout") %>" \
+  --debug="<%= p("debug") %>" \
+  --log-package-levels "<%= p("log_package_levels") %>" \
+  --enable-pprof="<%= p("enable_pprof") %>" \
+  --metrics "<%= p("metrics") %>" \
+  --auth-token "<%= p("auth_token") %>" \
   ${CLUSTER_FLAGS}

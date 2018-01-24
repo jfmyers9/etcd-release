@@ -8,6 +8,9 @@ properties:
   bootstrap_cluster:
     description: initial deploy option for bootstraping a cluster
     default: false
+
+  # Clustering Options
+
   client_listen_address:
     description: address for server to listen on for client traffic
     default: 0.0.0.0
@@ -20,6 +23,9 @@ properties:
   peer_port:
     description: port for server to listen on for peer traffic
     default: 2380
+
+  # Security Options
+
   tls:
     cert:
       description: client server TLS cert
@@ -33,6 +39,67 @@ properties:
       description: peer server TLS key
     peer_trusted_ca:
       description: peer server TLS trusted CA cert
+
+  # Member Options
+
+  wal_dir:
+    description: path to the dedicated wal directory
+    default: ""
+  snapshot_count:
+    description: number of committed transactions to trigger a snapshot to disk.
+    default: 100000
+  heartbeat_interval:
+    description: time (in milliseconds) of a heartbeat interval
+    default: 100
+  election_timeout:
+    description: time (in milliseconds) for an election to timeout
+    default: 1000
+  max_snapshots:
+    description: maximum number of snapshot files to retain (0 is unlimited)
+    default: 5
+  max_wals:
+    description: maximum number of wal files to retain
+    default: 5
+  cors:
+    description: comma-separated whitelist of origins for CORS (cross-origin resource sharing)
+    default: ""
+  quota_backend_bytes:
+    description: raise alarms when backend size exceeds the given quota (0 defaults to low space quota)
+    default: 0
+  max_request_bytes:
+    description: maximum client request size in bytes the server will accept.
+    default: 1572864
+  grpc_keepalive_min_time:
+    description: minimum duration interval that a client should wait before pinging server.
+    default: 5s
+  grpc_keepalive_interval:
+    description: frequency duration of server-to-client ping to check if a connection is alive (0 to disable).
+    default: 2h
+  grpc_keepalive_timeout:
+    description: additional duration of wait before closing a non-responsive connection (0 to disable).
+    default: 20s
+
+  # Logging Options
+
+  debug:
+    description: enable debug-level logging for etcd
+    default: false
+  log_package_levels:
+    description: specify a particular log level for each etcd package (eg 'etcdmain=CRITICAL,etcdserver=DEBUG')
+    default: ""
+
+  # Unsafe Options
+
+  enable_pprof:
+    description: Enable runtime profiling data via HTTP server. Address is at client URL + "/debug/pprof/"
+    default: false
+  metrics:
+    description: Set level of detail for exported metrics, specify 'extensive' to include histogram metrics.
+    default: basic
+
+  auth_token:
+    description: Specify a v3 authentication token type and its options ('simple' or 'jwt')
+    default: simple
 
 consumes:
 - name: etcd_peers
