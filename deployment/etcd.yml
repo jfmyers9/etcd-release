@@ -22,8 +22,6 @@ instance_groups:
   - z1
   - z2
   - z3
-  consumes:
-    etcd_peer: {from: etcd}
   persistent_disk_type: 10GB
   instances: 3
   jobs:
@@ -31,6 +29,8 @@ instance_groups:
     release: bpm
   - name: etcd
     release: etcd
+    consumes:
+      etcd_peers: {from: etcd_peers}
     properties:
       tls:
         cert: ((etcd_client_tls.certificate))
