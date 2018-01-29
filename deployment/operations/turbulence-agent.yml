@@ -13,4 +13,6 @@
   path: /releases/name=turbulence?
   value:
     name: turbulence
-    version: latest
+    sha1: 259344312796e23500b2836a15140f8f09ad99ee
+    url: https://bosh.io/d/github.com/cppforlife/turbulence-release?v=0.10.0
+    version: 0.10.0

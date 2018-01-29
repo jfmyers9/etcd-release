@@ -46,7 +46,9 @@ instance_groups:
 
 releases:
 - name: bosh-dns
-  version: latest
+  sha1: 9231b7c7d2f6aa85e0cb77fdeef7add54fdb3f1a
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=0.2.0
+  version: 0.2.0
 - name: bpm
   version: latest
 - name: etcd
