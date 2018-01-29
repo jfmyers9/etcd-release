@@ -31,6 +31,8 @@ instance_groups:
     release: etcd
     consumes:
       etcd_peers: {from: etcd_peers}
+    provides:
+      etcd_client: {as: etcd_client, shared: true}
     properties:
       tls:
         cert: ((etcd_client_tls.certificate))

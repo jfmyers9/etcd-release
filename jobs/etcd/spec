@@ -108,6 +108,13 @@ consumes:
 provides:
 - name: etcd_peers
   type: etcd_peer
+- name: etcd_client
+  type: etcd_client
+  properties:
+  - client_port
+  - tls.cert
+  - tls.key
+  - tls.trusted_ca
 
 templates:
   bpm.yml.erb: config/bpm.yml
