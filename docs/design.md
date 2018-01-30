@@ -59,7 +59,7 @@ DNS will keep the DNS address of the node static as the GUID used to identify
 the instance will not change. With regards to the data directory, a BOSH deploy
 will result in one of the following cases:
 * Normal Deploy: The disk will not be unmounted and thus the data directory will remain unchanged.
-* Stemcell Deploy: The disk will not be remounted after VM creation and prior to starting the process.
+* Stemcell Deploy: The disk will be remounted after VM creation and prior to starting the process.
 * Persistent Disk Size Change: The contents of the previous persistent disk will be copied to the new persistent disk prior to starting the process.
 
 Thus BOSH handles all of the management for the persistent data directory
