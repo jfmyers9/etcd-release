@@ -5,6 +5,20 @@ This is an experimental implementation of an ETCD release using BPM.
 **NOTE**: This release is not meant for external consumption, and is mainly an
 exploration to learn more about ETCD.
 
+## Motivation
+
+The goals of this release are:
+
+* To provide a simple interface to deploying ETCD as a BOSH release
+* To reduce complexity surrounding cluster management of ETCD
+* To serve as an example of how to use BPM for process management
+* To serve as a learning experience for how to operate ETCD
+
+## Design
+
+Please refer to the [design documentation](docs/design.md) for an in depth
+explanation at many of the design decisions of this release.
+
 ## Deploying
 
 By design, an initial deploy of this ETCD release requires the user to specify
