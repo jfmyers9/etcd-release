@@ -8,8 +8,8 @@ of ETCD. BPM forces the use of a declarative configuration for process execution
 and the remaining bash scripts are simple and easily audited.
 By running inside containers, we no longer need to manage a large number of
 generic concerns such as pidfiles, log redirection, process limits, and
-filesystem permissions. We can now rely on a heavily tested Go program than
-largely untested bash scripts.
+filesystem permissions. We can now rely on a heavily tested Go program rather
+than on largely untested bash scripts.
 
 An added feature of using BPM is that we greatly increase the security profile
 of the ETCD release. BPM runs processes inside
