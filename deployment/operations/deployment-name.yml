@@ -1,0 +1,23 @@
+---
+- type: replace
+  path: /name
+  value: ((deployment-name))
+
+- type: replace
+  path: /variables/name=etcd_client_tls/options/common_name
+  value: ((common-name))
+
+- type: replace
+  path: /variables/name=etcd_client_tls/options/alternative_names
+  value:
+  - ((common-name))
+  - ((wildcard-alternative-name))
+
+- type: replace
+  path: /variables/name=etcd_peer_tls/options/common_name
+  value: ((common-name))
+
+- type: replace
+  path: /variables/name=etcd_peer_tls/options/alternative_names
+  value:
+  - ((wildcard-alternative-name))
