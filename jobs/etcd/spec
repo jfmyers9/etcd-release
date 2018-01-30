@@ -109,7 +109,7 @@ provides:
 - name: etcd_peers
   type: etcd_peer
 - name: etcd_client
-  type: etcd_client
+  type: etcd_service
   properties:
   - client_port
   - tls.cert
