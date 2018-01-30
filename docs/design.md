@@ -4,8 +4,8 @@
 
 By using [BPM](https://github.com/cloudfoundry-incubator/bpm-release) for
 process management, we are able to simplify the process execution and lifecycle
-of ETCD. BPM forces us to use a declarative configuration for process execution
-and the resulting bash scripts are easily audited and largely devoid of logic.
+of ETCD. BPM forces the use of a declarative configuration for process execution,
+and the remaining bash scripts are simple and easily audited.
 By running inside containers, we no longer need to manage a large number of
 generic concerns such as pidfiles, log redirection, process limits, and
 filesystem permissions. We can now rely on a heavily tested Go program than
@@ -15,7 +15,7 @@ An added feature of using BPM is that we greatly increase the security profile
 of the ETCD release. BPM runs processes inside
 [runc](https://github.com/opencontainers/runc) containers with de-escalated
 privileges. You can read more about the benefits of using BPM
-[here](https://github.com/cloudfoundry-incubator/bpm-release/blob/master/README.md)
+[here](https://github.com/cloudfoundry-incubator/bpm-release/blob/master/README.md).
 
 ## Strictly Following ETCD Documentation
 
@@ -100,6 +100,22 @@ If for some reason disaster recovery steps are required, the operator will be
 required to perform these actions manually. In the future we could provide a
 set of errands to successfully perform disaster recovery, but I would like to
 keep the disaster recovery process a manual process.
+
+## Operator Experience
+
+A goal of this relase was to improve the user experience for operators.
+By using BPM, the operator is provided with a useful set of commands to
+strace their process (`bpm trace`), tail logs (`bpm logs`), and inspect
+process state (`bpm pid`, `bpm list`, etc). By default `bpm` will be placed
+on the `PATH` of an operator when launching a login shell.
+
+Following the above design, this release provides a [useful helper
+script](../jobs/etcd/templates/etcdctl.erb) which simplifies interacting
+with the ETCD cluster for debug purposes. This binary will also be places
+on the `PATH` of the operator whenever initiating a login shell.
+
+**Note**: It is recommended that users use `sudo -i` after `bosh ssh` so that
+the a new login shell is launched when escalating to the `root` user.
 
 ## Configuration Properties
 
