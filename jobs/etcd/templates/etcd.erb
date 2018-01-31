@@ -8,9 +8,11 @@ NAME="<%= spec.address.split(".").first %>"
 CLUSTER="<%= peers.instances.map { |peer| "#{peer.address.split(".").first}=https://#{peer.address}:#{p("peer_port")}" }.join(",") %>"
 
 <% if p("bootstrap_cluster") %>
-CLUSTER_FLAGS="--initial-cluster-state new --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
+CLUSTER_STATE="new"
 <% else %>
 /var/vcap/packages/bosh-dns/bin/bosh-dns-wait --checkDomain upcheck.bosh-dns. --timeout 5m
+
+CLUSTER_STATE="existing"
 
 if [[ ! -d /var/vcap/store/etcd/member ]]; then
   OUTPUT="$(/var/vcap/jobs/etcd/bin/etcdctl member add ${NAME} "https://<%= spec.address + ":" + p("peer_port").to_s %>")"
@@ -23,44 +25,42 @@ if [[ ! -d /var/vcap/store/etcd/member ]]; then
 
   CLUSTER_STATE="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER_STATE=" | cut -d'=' -f2- | cut -d'"' -f2)"
   CLUSTER="$(echo "${OUTPUT}" | grep "ETCD_INITIAL_CLUSTER=" | cut -d'=' -f2- | cut -d'"' -f2)"
-
-  CLUSTER_FLAGS="--initial-cluster-state ${CLUSTER_STATE} --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
-else
-  CLUSTER_FLAGS="--initial-cluster-state existing --initial-cluster ${CLUSTER} --initial-cluster-token etcd-release-token"
 fi
 <% end %>
 
 /var/vcap/packages/etcd/etcd \
   --advertise-client-urls "https://<%= spec.address + ":" + p("client_port").to_s %>" \
+  --auth-token "<%= p("auth_token") %>" \
   --cert-file /var/vcap/jobs/etcd/config/server.crt \
   --client-cert-auth \
+  --cors "<%= p("cors") %>" \
   --data-dir /var/vcap/store/etcd \
+  --debug="<%= p("debug") %>" \
+  --election-timeout "<%= p("election_timeout") %>" \
+  --enable-pprof="<%= p("enable_pprof") %>" \
+  --grpc-keepalive-interval "<%= p("grpc_keepalive_interval") %>" \
+  --grpc-keepalive-min-time "<%= p("grpc_keepalive_min_time") %>" \
+  --grpc-keepalive-timeout "<%= p("grpc_keepalive_timeout") %>" \
+  --heartbeat-interval "<%= p("heartbeat_interval") %>" \
   --initial-advertise-peer-urls "https://<%= spec.address + ":" + p("peer_port").to_s %>" \
+  --initial-cluster ${CLUSTER} \
+  --initial-cluster-state ${CLUSTER_STATE} \
+  --initial-cluster-token etcd-release-token \
   --key-file /var/vcap/jobs/etcd/config/server.key \
   --listen-client-urls "https://<%= p("client_listen_address") + ":" + p("client_port").to_s %>" \
   --listen-peer-urls "https://<%= p("peer_listen_address") + ":" + p("peer_port").to_s %>" \
+  --log-package-levels "<%= p("log_package_levels") %>" \
+  --max-request-bytes "<%= p("max_request_bytes") %>" \
+  --max-snapshots "<%= p("max_snapshots") %>" \
+  --max-wals "<%= p("max_wals") %>" \
+  --metrics "<%= p("metrics") %>" \
   --name ${NAME} \
   --peer-cert-file /var/vcap/jobs/etcd/config/peer.crt \
   --peer-client-cert-auth \
   --peer-key-file /var/vcap/jobs/etcd/config/peer.key \
   --peer-trusted-ca-file /var/vcap/jobs/etcd/config/peer-ca.crt \
+  --quota-backend-bytes "<%= p("quota_backend_bytes") %>" \
+  --snapshot-count "<%= p("snapshot_count") %>" \
   --strict-reconfig-check \
   --trusted-ca-file /var/vcap/jobs/etcd/config/server-ca.crt \
-  --wal-dir "<%= p("wal_dir") %>" \
-  --snapshot-count "<%= p("snapshot_count") %>" \
-  --heartbeat-interval "<%= p("heartbeat_interval") %>" \
-  --election-timeout "<%= p("election_timeout") %>" \
-  --max-snapshots "<%= p("max_snapshots") %>" \
-  --max-wals "<%= p("max_wals") %>" \
-  --cors "<%= p("cors") %>" \
-  --quota-backend-bytes "<%= p("quota_backend_bytes") %>" \
-  --max-request-bytes "<%= p("max_request_bytes") %>" \
-  --grpc-keepalive-min-time "<%= p("grpc_keepalive_min_time") %>" \
-  --grpc-keepalive-interval "<%= p("grpc_keepalive_interval") %>" \
-  --grpc-keepalive-timeout "<%= p("grpc_keepalive_timeout") %>" \
-  --debug="<%= p("debug") %>" \
-  --log-package-levels "<%= p("log_package_levels") %>" \
-  --enable-pprof="<%= p("enable_pprof") %>" \
-  --metrics "<%= p("metrics") %>" \
-  --auth-token "<%= p("auth_token") %>" \
-  ${CLUSTER_FLAGS}
+  --wal-dir "<%= p("wal_dir") %>"
