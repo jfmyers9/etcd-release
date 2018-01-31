@@ -26,19 +26,18 @@ properties:
 
   # Security Options
 
-  tls:
-    cert:
-      description: client server TLS cert
-    key:
-      description: client server TLS key
-    trusted_ca:
-      description: client server TLS trusted CA cert
-    peer_cert:
-      description: peer server TLS cert
-    peer_key:
-      description: peer server TLS key
-    peer_trusted_ca:
-      description: peer server TLS trusted CA cert
+  tls.cert:
+    description: client server TLS cert
+  tls.key:
+    description: client server TLS key
+  tls.trusted_ca:
+    description: client server TLS trusted CA cert
+  tls.peer_cert:
+    description: peer server TLS cert
+  tls.peer_key:
+    description: peer server TLS key
+  tls.peer_trusted_ca:
+    description: peer server TLS trusted CA cert
 
   # Member Options
 
