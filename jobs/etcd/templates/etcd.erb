@@ -10,8 +10,6 @@ CLUSTER="<%= peers.instances.map { |peer| "#{peer.address.split(".").first}=http
 <% if p("bootstrap_cluster") %>
 CLUSTER_STATE="new"
 <% else %>
-/var/vcap/packages/bosh-dns/bin/bosh-dns-wait --checkDomain upcheck.bosh-dns. --timeout 5m
-
 CLUSTER_STATE="existing"
 
 if [[ ! -d /var/vcap/store/etcd/member ]]; then
