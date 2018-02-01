@@ -29,6 +29,7 @@ fi
 /var/vcap/packages/etcd/etcd \
   --advertise-client-urls "https://<%= spec.address + ":" + p("client_port").to_s %>" \
   --auth-token "<%= p("auth_token") %>" \
+  --auto-compaction-retention "<%= p("auto_compaction_retention") %>" \
   --cert-file /var/vcap/jobs/etcd/config/server.crt \
   --client-cert-auth \
   --cors "<%= p("cors") %>" \

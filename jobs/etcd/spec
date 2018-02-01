@@ -23,6 +23,9 @@ properties:
   peer_port:
     description: port for server to listen on for peer traffic
     default: 2380
+  auto_compaction_retention:
+    description: auto compaction retention in hour. 0 means disable auto compaction
+    default: 0
 
   # Security Options
 
