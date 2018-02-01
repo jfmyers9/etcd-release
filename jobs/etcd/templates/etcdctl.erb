@@ -2,18 +2,24 @@
 
 <% peers = link("etcd_peers") %>
 
+ENDPOINTS="<%= peers.instances.map { |peer| "https://#{peer.address}:#{p("client_port")}" }.join(",") %>"
+
+if [[ "${LOCAL}" -eq "true" ]]; then
+  ENDPOINTS="<%= "https://#{spec.address}:#{p("client_port")}" %>"
+fi
+
 if [[ "${ETCDCTL_API}" -eq "3" ]]; then
   /var/vcap/packages/etcd/etcdctl \
     --cacert /var/vcap/jobs/etcd/config/server-ca.crt \
     --cert /var/vcap/jobs/etcd/config/server.crt \
     --key /var/vcap/jobs/etcd/config/server.key \
-    --endpoints "<%= peers.instances.map { |peer| "https://#{peer.address}:#{p("client_port")}" }.join(",") %>" \
+    --endpoints "${ENDPOINTS}" \
     "$@"
 else
   /var/vcap/packages/etcd/etcdctl \
     --ca-file /var/vcap/jobs/etcd/config/server-ca.crt \
     --cert-file /var/vcap/jobs/etcd/config/server.crt \
     --key-file /var/vcap/jobs/etcd/config/server.key \
-    --endpoints "<%= peers.instances.map { |peer| "https://#{peer.address}:#{p("client_port")}" }.join(",") %>" \
+    --endpoints "${ENDPOINTS}" \
     "$@"
 fi
