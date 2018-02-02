@@ -4,7 +4,7 @@
 
 ENDPOINTS="<%= peers.instances.map { |peer| "https://#{peer.address}:#{p("client_port")}" }.join(",") %>"
 
-if [[ "${LOCAL}" -eq "true" ]]; then
+if [[ "${LOCAL}" == "true" ]]; then
   ENDPOINTS="<%= "https://#{spec.address}:#{p("client_port")}" %>"
 fi
 
