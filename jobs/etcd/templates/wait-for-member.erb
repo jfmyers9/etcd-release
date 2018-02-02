@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while true; do
+  if ! LOCAL=true ETCDCTL_API=3 /var/vcap/jobs/etcd/bin/etcdctl endpoint health ; then
+    echo "etcd member is not healthy..."
+    sleep 1
+  else
+    echo "etcd member is healthy"
+    exit 0
+  fi
+done

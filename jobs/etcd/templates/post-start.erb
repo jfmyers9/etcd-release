@@ -1,0 +1,5 @@
+#!/bin/bash
+
+<% if p("wait_on_member_health") %>
+timeout 10m /var/vcap/jobs/etcd/bin/wait-for-member
+<% end %>

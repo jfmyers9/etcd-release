@@ -8,6 +8,9 @@ properties:
   bootstrap_cluster:
     description: initial deploy option for bootstraping a cluster
     default: false
+  wait_on_member_health:
+    description: enable a post-start health check that checks the health of the member
+    default: false
 
   # Clustering Options
 
@@ -126,8 +129,10 @@ templates:
   peer-ca.crt.erb: config/peer-ca.crt
   peer.crt.erb: config/peer.crt
   peer.key.erb: config/peer.key
+  post-start.erb: bin/post-start
   pre-start.erb: bin/pre-start
   server-ca.crt.erb: config/server-ca.crt
   server.crt.erb: config/server.crt
   server.key.erb: config/server.key
   setup.erb: bin/setup
+  wait-for-member.erb: bin/wait-for-member
