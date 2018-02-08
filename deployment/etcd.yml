@@ -109,7 +109,7 @@ variables:
   type: certificate
   options:
     is_ca: true
-  common_name: boshDNSCA
+    common_name: boshDNSCA
 - name: bosh_dns_server_tls
   type: certificate
   options:
